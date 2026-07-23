@@ -156,7 +156,7 @@ make build
 docker build -t tren:local .
 ```
 
-GitHub Actions runs formatting, module integrity, `go vet`, race-enabled tests, an offline demo smoke test, cross-platform tests, and a Docker build. The workflow receives read-only repository permissions and no deployment secrets.
+GitHub Actions runs formatting and module-integrity checks, `go vet`, and race-enabled tests on Linux. The workflow receives read-only repository permissions and no deployment secrets.
 
 The repository is maintained as a personal project and reference implementation. It does not currently operate as a contributor-driven project.
 
