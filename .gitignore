@@ -1,0 +1,24 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+.railway/
+
+# Local Tren configuration and credentials
+/config.json
+credentials.json
+google-service-account.json
+telegram-token
+dashboard-password
+webhook-secret
+*.pem
+*.key
+
+# Build and test outputs
+/tren
+dist/
+coverage.out
+*.out
+*.log

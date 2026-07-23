@@ -1,0 +1,6 @@
+{
+  "spreadsheet_id": "your-google-spreadsheet-id",
+  "google_credentials_file": "google-service-account.json",
+  "telegram_token_file": "telegram-token",
+  "dashboard_address": "127.0.0.1:8787"
+}

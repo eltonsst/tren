@@ -1,0 +1,119 @@
+{{define "index.html"}}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}}</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Tren dashboard home"><span>TREN</span><small>training intelligence</small></a>
+    <div class="topbar-meta">
+      {{if .Demo}}<span class="badge badge-demo">Demo data</span>{{end}}
+      <span class="badge">{{.Version}}</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <form class="search" action="/" method="get">
+        <label for="exercise-search">Find an exercise</label>
+        <div class="search-row">
+          <input id="exercise-search" name="q" value="{{.Query}}" placeholder="Bench, squat, pull-up…" autocomplete="off">
+          <button type="submit">Search</button>
+        </div>
+      </form>
+
+      <nav aria-label="Exercise catalogue">
+        <div class="nav-heading"><span>Current program</span><span>{{len .CurrentExercises}}</span></div>
+        <div class="exercise-list">
+          {{range .CurrentExercises}}
+          <a class="exercise-link {{if .Selected}}selected{{end}}" href="{{.Href}}">
+            <span><strong>{{.Name}}</strong>{{if .HasRecord}}<i title="Has logged history"></i>{{end}}</span>
+            <b>{{.Workouts}}</b>
+          </a>
+          {{else}}<p class="empty-nav">No matching program exercises.</p>{{end}}
+        </div>
+
+        {{if .OtherExercises}}
+        <details class="other-exercises">
+          <summary>Other exercises <span>{{len .OtherExercises}}</span></summary>
+          <div class="exercise-list muted-list">
+            {{range .OtherExercises}}
+            <a class="exercise-link {{if .Selected}}selected{{end}}" href="{{.Href}}"><span><strong>{{.Name}}</strong></span></a>
+            {{end}}
+          </div>
+        </details>
+        {{end}}
+      </nav>
+    </aside>
+
+    <section class="content">
+      <div class="exercise-header">
+        <div>
+          <p class="eyebrow">Exercise overview</p>
+          <h1>{{.Selected.Name}}</h1>
+          <p class="subtle mono">{{.Selected.ID}} <span>·</span> {{.Selected.LoadMode}}</p>
+        </div>
+      </div>
+
+      <section class="prescription" aria-labelledby="prescription-title">
+        <div class="section-heading"><div><p class="eyebrow">Now</p><h2 id="prescription-title">Current prescription</h2></div></div>
+        <div class="prescription-rows">
+          {{range .Selected.Prescriptions}}
+          <div class="prescription-row"><span class="slot">{{.Slot}}</span><strong>{{.Detail}}</strong><span>{{.Load}}</span></div>
+          {{else}}<p class="empty-state">This exercise is not in the active program.</p>{{end}}
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Exercise summary">
+        {{range .Selected.Metrics}}
+        <article class="metric"><span>{{.Label}}</span><strong class="{{.Tone}}">{{.Value}}</strong></article>
+        {{end}}
+      </section>
+
+      {{with .Selected.Chart}}
+      <section class="chart-card" aria-labelledby="chart-title">
+        <div class="section-heading chart-heading">
+          <div><p class="eyebrow">Progression</p><h2 id="chart-title">{{.Label}}</h2></div>
+          <span class="change">{{.Change}}</span>
+        </div>
+        <svg class="progress-chart" viewBox="0 0 1000 320" role="img" aria-label="{{.Accessible}}">
+          <defs>
+            <linearGradient id="chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#769cff" stop-opacity=".22"/><stop offset="1" stop-color="#769cff" stop-opacity="0"/></linearGradient>
+          </defs>
+          {{range .YTicks}}
+          <line class="grid" x1="72" x2="976" y1="{{.Position}}" y2="{{.Position}}"/>
+          <text class="axis-label y-label" x="58" y="{{.Position}}">{{.Label}}</text>
+          {{end}}
+          <line class="axis" x1="72" x2="72" y1="24" y2="272"/>
+          <line class="axis" x1="72" x2="976" y1="272" y2="272"/>
+          <polyline class="trend-shadow" points="{{.Polyline}}"/>
+          <polyline class="trend" points="{{.Polyline}}"/>
+          {{range .Points}}<circle class="point" cx="{{.X}}" cy="{{.Y}}" r="7"><title>{{.Title}}</title></circle>{{end}}
+          {{range .XTicks}}<text class="axis-label x-label" x="{{.Position}}" y="305">{{.Label}}</text>{{end}}
+          <text class="unit-label" x="976" y="18">{{.Unit}}</text>
+        </svg>
+      </section>
+      {{end}}
+
+      <section class="history-card" aria-labelledby="history-title">
+        <div class="section-heading"><div><p class="eyebrow">Log</p><h2 id="history-title">Recent history</h2></div></div>
+        {{if .Selected.HasHistory}}
+        <div class="history-list">
+          {{range .Selected.History}}
+          <article class="history-row">
+            <div class="history-date"><strong>{{.Date}}</strong><span>{{.Workout}} · {{.Status}}</span></div>
+            <div class="set-list">{{range .Sets}}<span>{{.}}</span>{{end}}</div>
+          </article>
+          {{end}}
+        </div>
+        {{else}}
+        <div class="empty-state"><strong>No working sets yet.</strong><span>Your first completed exercise will appear here.</span></div>
+        {{end}}
+      </section>
+    </section>
+  </main>
+</body>
+</html>{{end}}
