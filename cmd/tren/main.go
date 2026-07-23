@@ -156,9 +156,6 @@ func runStats(ctx context.Context, checker *sheetscheck.Checker, arguments []str
 	demo := false
 	var queryParts []string
 	for _, argument := range arguments {
-		if argument == "--plain" {
-			continue
-		}
 		if argument == "--demo" {
 			demo = true
 			continue

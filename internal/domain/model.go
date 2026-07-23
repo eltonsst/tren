@@ -20,28 +20,11 @@ func (w WorkoutCode) Valid() bool {
 	}
 }
 
-func (w WorkoutCode) Next() (WorkoutCode, bool) {
-	switch w {
-	case WorkoutA:
-		return WorkoutB, false
-	case WorkoutB:
-		return WorkoutC, false
-	case WorkoutC:
-		return WorkoutD, false
-	case WorkoutD:
-		return WorkoutA, true
-	default:
-		return "", false
-	}
-}
-
 type ProgramVersionStatus string
 
 const (
-	ProgramDraft     ProgramVersionStatus = "draft"
 	ProgramActive    ProgramVersionStatus = "active"
 	ProgramCompleted ProgramVersionStatus = "completed"
-	ProgramArchived  ProgramVersionStatus = "archived"
 )
 
 type ProgramVersion struct {
@@ -87,27 +70,6 @@ type Prescription struct {
 	IncrementKG      *float64
 	HomeAlternatives []string
 	GymAlternatives  []string
-	Notes            string
-}
-
-type SessionStatus string
-
-const (
-	SessionOpen      SessionStatus = "open"
-	SessionCompleted SessionStatus = "completed"
-	SessionAbandoned SessionStatus = "abandoned"
-)
-
-type Session struct {
-	ID               string
-	ProgramVersionID string
-	RotationNumber   int
-	Workout          WorkoutCode
-	StartedAt        time.Time
-	FinishedAt       *time.Time
-	Status           SessionStatus
-	TelegramChatID   int64
-	StartMessageID   int
 	Notes            string
 }
 

@@ -50,10 +50,6 @@ func New(token string) (*Client, error) {
 	}, nil
 }
 
-func newWithHTTPClient(token, baseURL string, httpClient *http.Client) *Client {
-	return &Client{token: token, baseURL: strings.TrimRight(baseURL, "/"), httpClient: httpClient}
-}
-
 func (c *Client) GetUpdates(ctx context.Context, offset int64) ([]Update, error) {
 	var updates []Update
 	err := c.call(ctx, "getUpdates", map[string]any{
@@ -86,10 +82,6 @@ func (c *Client) SetWebhook(ctx context.Context, url, secret string) error {
 		"url": url, "secret_token": secret,
 		"allowed_updates": []string{"message"}, "max_connections": 1,
 	}, nil)
-}
-
-func (c *Client) SendMessage(ctx context.Context, chatID int64, text string) error {
-	return c.SendMessageWithKeyboard(ctx, chatID, text, nil)
 }
 
 func (c *Client) SendMessageWithKeyboard(ctx context.Context, chatID int64, text string, rows [][]string) error {

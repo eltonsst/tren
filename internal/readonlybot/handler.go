@@ -34,10 +34,6 @@ func New(store Store) *Handler {
 	return &Handler{store: store, now: time.Now}
 }
 
-func newWithClock(store Store, now func() time.Time) *Handler {
-	return &Handler{store: store, now: now}
-}
-
 func (h *Handler) CommandKeyboard(ctx context.Context) ([][]string, error) {
 	session, err := h.store.OpenSession(ctx)
 	if err != nil {

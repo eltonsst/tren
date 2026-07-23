@@ -27,6 +27,10 @@ func fakeHTTPClient(t *testing.T, handler func(*http.Request) string) *http.Clie
 	})}
 }
 
+func newWithHTTPClient(token, baseURL string, httpClient *http.Client) *Client {
+	return &Client{token: token, baseURL: strings.TrimRight(baseURL, "/"), httpClient: httpClient}
+}
+
 func TestGetUpdates(t *testing.T) {
 	client := newWithHTTPClient("secret-token", "https://telegram.test", fakeHTTPClient(t, func(request *http.Request) string {
 		if request.URL.Path != "/botsecret-token/getUpdates" {
@@ -79,22 +83,6 @@ func TestSetWebhook(t *testing.T) {
 	}))
 	if err := client.SetWebhook(context.Background(), "https://tren.test/telegram/webhook", "webhook-secret"); err != nil {
 		t.Fatalf("SetWebhook() error = %v", err)
-	}
-}
-
-func TestSendMessage(t *testing.T) {
-	client := newWithHTTPClient("secret-token", "https://telegram.test", fakeHTTPClient(t, func(request *http.Request) string {
-		var body map[string]any
-		if err := json.NewDecoder(request.Body).Decode(&body); err != nil {
-			t.Fatal(err)
-		}
-		if body["chat_id"] != float64(99) || body["text"] != "Workout A" {
-			t.Fatalf("body = %#v", body)
-		}
-		return `{"ok":true,"result":{"message_id":4}}`
-	}))
-	if err := client.SendMessage(context.Background(), 99, "Workout A"); err != nil {
-		t.Fatalf("SendMessage() error = %v", err)
 	}
 }
 

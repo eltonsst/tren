@@ -110,6 +110,12 @@ func message(text string, userID int64) telegram.Update {
 	}}
 }
 
+func newWithClock(store Store, now func() time.Time) *Handler {
+	handler := New(store)
+	handler.now = now
+	return handler
+}
+
 func TestWhoAmI(t *testing.T) {
 	handler := New(&fakeStore{})
 	_, reply, err := handler.Handle(context.Background(), message("/whoami", 123))
