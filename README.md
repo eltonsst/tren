@@ -1,7 +1,5 @@
 # Tren
 
-![Tren — Telegram, Google Sheets, and Go]
-
 [![CI](https://github.com/eltonsst/tren/actions/workflows/ci.yml/badge.svg)](https://github.com/eltonsst/tren/actions/workflows/ci.yml)
 
 Tren is a self-hosted bodybuilding tracker built around Telegram, Google Sheets, and a Go web dashboard. Telegram handles workout logging, Sheets remains the editable source of truth, and the dashboard turns the recorded sets into exercise-level progress reports.
