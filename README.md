@@ -1,6 +1,6 @@
 # Tren
 
-![Tren — Telegram, Google Sheets, and Go](docs/assets/tren-meme-social-preview.png)
+![Tren — Telegram, Google Sheets, and Go]
 
 [![CI](https://github.com/eltonsst/tren/actions/workflows/ci.yml/badge.svg)](https://github.com/eltonsst/tren/actions/workflows/ci.yml)
 
